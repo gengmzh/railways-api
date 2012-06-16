@@ -6,6 +6,7 @@ package org.railways.api;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +32,26 @@ public class Response implements Closeable {
 		return headers;
 	}
 
+	public List<String> getHeader(String key) {
+		if (headers.containsKey(key)) {
+			return headers.get(key);
+		}
+		if (key != null) {
+			String k = key.toLowerCase();
+			if (headers.containsKey(k)) {
+				return headers.get(k);
+			}
+			k = key.toUpperCase();
+			if (headers.containsKey(k)) {
+				return headers.get(k);
+			}
+		}
+		return Collections.emptyList();
+	}
+
 	public Map<String, String> getCookies() {
 		Map<String, String> result = new HashMap<String, String>();
-		List<String> ckl = headers.get("Set-Cookie");
-		if (ckl == null) {
-			ckl = headers.get("set-cookie");
-		}
+		List<String> ckl = getHeader("Set-Cookie");
 		if (ckl != null && !ckl.isEmpty()) {
 			for (String ck : ckl) {
 				if (ck == null) {
