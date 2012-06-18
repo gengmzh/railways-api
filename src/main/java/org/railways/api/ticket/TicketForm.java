@@ -87,7 +87,7 @@ public class TicketForm implements Serializable {
 	// }
 
 	private Map<String, String> value;
-	private String ictKey;
+	private String ictKey, depart, dest;
 
 	public TicketForm() {
 		this.value = new HashMap<String, String>();
@@ -122,7 +122,7 @@ public class TicketForm implements Serializable {
 	public Date getDate() {
 		String month = value.get("nmonth3"), date = value.get("nday3");
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.MONTH, Integer.parseInt(month));
+		cal.set(Calendar.MONTH, Integer.parseInt(month) - 1);
 		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date));
 		cal.set(Calendar.HOUR_OF_DAY, 0);
 		cal.set(Calendar.MINUTE, 0);
@@ -149,8 +149,13 @@ public class TicketForm implements Serializable {
 		return value.get("startStation_ticketLeft");
 	}
 
+	public String getStartStation() {
+		return depart;
+	}
+
 	public TicketForm setDeparture(String from) {
 		value.put("startStation_ticketLeft", StationEncoder.encode(from));
+		depart = from;
 		// TODO
 		value.put("startStation_ticketLeft_new_value", "true");
 		return this;
@@ -161,8 +166,13 @@ public class TicketForm implements Serializable {
 		return value.get("arriveStation_ticketLeft");
 	}
 
+	public String getArriveStation() {
+		return dest;
+	}
+
 	public TicketForm setDestination(String to) {
 		value.put("arriveStation_ticketLeft", StationEncoder.encode(to));
+		dest = to;
 		// TODO
 		value.put("arriveStation_ticketLeft_new_value", "false");
 		return this;

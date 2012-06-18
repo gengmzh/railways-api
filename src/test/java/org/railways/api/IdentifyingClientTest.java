@@ -3,6 +3,7 @@
  */
 package org.railways.api;
 
+import java.io.FileOutputStream;
 import java.util.Map;
 
 import junit.framework.Assert;
@@ -35,6 +36,17 @@ public class IdentifyingClientTest extends TestCase {
 		Map<String, String> cookies = resp.getCookies();
 		System.out.println(cookies);
 		System.out.println(resp.getCookie());
+		// image
+		String img = "d:\\image.jpg";
+		FileOutputStream out = new FileOutputStream(img);
+		int b = -1;
+		while ((b = resp.getContent().read()) > -1) {
+			out.write(b);
+		}
+		resp.getContent().close();
+		out.flush();
+		out.close();
+		System.out.println("random image saved as " + img);
 	}
 
 }
